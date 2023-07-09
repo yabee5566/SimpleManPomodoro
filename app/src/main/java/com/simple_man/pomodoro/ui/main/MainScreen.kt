@@ -27,12 +27,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.Color.Companion.DarkGray
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.graphics.Color.Companion.Red
+import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import java.text.SimpleDateFormat
@@ -46,7 +51,7 @@ import kotlin.time.Duration.Companion.seconds
 fun TomatoScreen(modifier: Modifier = Modifier, viewModel: MainViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     TomatoScreen(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         uiState = uiState,
         onTomatoClick = viewModel::onTomatoClick
     )
@@ -67,28 +72,50 @@ internal fun TomatoScreen(
             is TomatoState.GreenPause -> Green.copy(alpha = 0.2F)
         }
         val tomatoText = when (uiState.tomatoState) {
-            TomatoState.Idle -> "開始第一顆番茄吧"
+            TomatoState.Idle -> ""
             is TomatoState.RedPause -> uiState.tomatoState.timeLeftInSec.seconds
             is TomatoState.RedRunning -> uiState.tomatoState.timeLeftInSec.seconds
             is TomatoState.GreenRunning -> uiState.tomatoState.timeLeftInSec.seconds
             is TomatoState.GreenPause -> uiState.tomatoState.timeLeftInSec.seconds
         }.toString()
+        val description = when (uiState.tomatoState) {
+            TomatoState.Idle -> "開啟第一開番茄鐘吧～"
+            is TomatoState.RedPause -> "停一下"
+            is TomatoState.RedRunning -> "專注專注～"
+            is TomatoState.GreenRunning -> "休息一下，進廣告～"
+            is TomatoState.GreenPause -> "暫停休息，小專注～"
+        }.toString()
 
-        Box(
-            modifier = Modifier
-                .padding(16.dp)
-                .size(200.dp)
-                .clip(CircleShape)
-                .clickable(onClick = onTomatoClick)
-                .drawBehind {
-                    drawCircle(color = tomatoColor, radius = size.maxDimension / 2)
-                }
-                .align(Alignment.Center),
+        Column(
+            modifier = modifier.align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            Spacer(modifier = Modifier.height(180.dp))
+            Box(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .size(200.dp)
+                    .clip(CircleShape)
+                    .clickable(onClick = onTomatoClick)
+                    .drawBehind {
+                        drawCircle(color = tomatoColor, radius = size.maxDimension / 2)
+                    },
+            ) {
+                Text(
+                    modifier = Modifier.align(Alignment.Center),
+                    text = tomatoText,
+                    color = White,
+                    textAlign = TextAlign.Center,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+
             Text(
-                modifier = Modifier.align(Alignment.Center),
-                text = tomatoText,
-                textAlign = TextAlign.Center,
+                text = description,
+                color = DarkGray,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold
             )
         }
     }
