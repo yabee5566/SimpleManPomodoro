@@ -16,6 +16,7 @@
 
 @Suppress("DSL_SCOPE_VIOLATION") // Remove when fixed https://youtrack.jetbrains.com/issue/KTIJ-19369
 plugins {
+    id("org.jmailen.kotlinter") version "3.15.0"
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
@@ -24,17 +25,17 @@ plugins {
 }
 
 android {
-    namespace = "com.simple_man.pomodoro"
+    namespace = "com.simpleman.pomodoro"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.simple_man.pomodoro"
+        applicationId = "com.simpleman.pomodoro"
         minSdk = 26
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "com.simple_man.pomodoro.HiltTestRunner"
+        testInstrumentationRunner = "com.simpleman.pomodoro.HiltTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
