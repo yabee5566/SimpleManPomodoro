@@ -27,7 +27,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SimpleManPomodoro"
-        android:name=".SimpleManPomodoro"
+        android:name=".SimpleManPomodoroApp"
         tools:targetApi="31">
         <activity
             android:name=".ui.MainActivity"
